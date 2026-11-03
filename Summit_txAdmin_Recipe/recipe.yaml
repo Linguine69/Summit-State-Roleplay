@@ -1,0 +1,44 @@
+$engine: 3
+$onesync: on
+name: Summit State Roleplay - ND Setup Starter
+version: 0.1.0
+author: Summit State Roleplay
+description: >-
+  Starter recipe for a fresh FiveM server. Not a finished economy server.
+  ND_Core, ND_Police, ND_MDT, multicharacter, and vehicle systems require
+  integration and testing before launch.
+tasks:
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Core
+    ref: main
+    dest: ./resources/[nd]/ND_Core
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Police
+    ref: main
+    dest: ./resources/[nd]/ND_Police
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_MDT
+    ref: main
+    dest: ./resources/[nd]/ND_MDT
+  - action: download_github
+    src: https://github.com/overextended/ox_target
+    ref: main
+    dest: ./resources/[standalone]/ox_target_source
+  - action: write_file
+    file: ./server.cfg
+    data: |
+      # Summit State Roleplay - DEVELOPMENT ONLY
+      # Set your licence key in the hosting panel. Do not publish secrets.
+      sv_hostname "Summit State Roleplay | Development"
+      sets sv_projectName "Summit State Roleplay"
+      sets sv_projectDesc "Serious economy roleplay | Under construction"
+      sv_maxclients 32
+      set onesync on
+      # ND resources intentionally NOT ensured until dependencies are installed.
+      # ox_target_source is source code, not a built release.
+      # See README.md before launching.
+      ensure mapmanager
+      ensure chat
+      ensure spawnmanager
+      ensure sessionmanager
+      ensure hardcap
