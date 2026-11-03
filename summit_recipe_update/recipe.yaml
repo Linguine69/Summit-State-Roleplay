@@ -1,0 +1,60 @@
+$engine: 3
+$onesync: on
+name: Summit State Roleplay - ND Development Foundation
+version: 0.2.0
+author: Summit State Roleplay
+description: >-
+  DEVELOPMENT RECIPE. Downloads ND source resources, but requires built ox dependencies,
+  database setup and additional configuration. Not a complete playable economy server.
+tasks:
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Core
+    ref: main
+    dest: ./resources/[nd]/ND_Core
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Police
+    ref: main
+    dest: ./resources/[nd]/ND_Police
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_MDT
+    ref: main
+    dest: ./resources/[nd]/ND_MDT
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Characters
+    ref: main
+    dest: ./resources/[nd]/ND_Characters
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Banking
+    ref: main
+    dest: ./resources/[nd]/ND_Banking
+  - action: write_file
+    file: ./server.cfg
+    data: |
+      # Summit State Roleplay DEVELOPMENT configuration
+      # Requires separate installation of release builds of oxmysql, ox_lib,
+      # ox_inventory, ox_target, and their compatible dependencies.
+      # Do not add private credentials to a public GitHub repository.
+      sv_hostname "Summit State Roleplay | Development"
+      sets sv_projectName "Summit State Roleplay"
+      sets sv_projectDesc "Serious economy roleplay | Development"
+      sv_maxclients 32
+      set onesync on
+      # Add sv_licenseKey and mysql_connection_string securely in txAdmin.
+      # Enable only after installing all dependencies and importing SQL:
+      # ensure oxmysql
+      # ensure ox_lib
+      # ensure ox_inventory
+      # ensure ox_target
+      # ensure ND_Core
+      # ensure ND_Characters
+      # ensure ND_Banking
+      # ensure ND_Police
+      # ensure ND_MDT
+      # Staff-only vMenu and Discord role mapping are NOT installed by this recipe.
+      # Approved economy goals: $5000 bank, $500 cash, standard pay.
+      # Approved character goals: 3 slots; civilian/criminal same character.
+      ensure mapmanager
+      ensure chat
+      ensure spawnmanager
+      ensure sessionmanager
+      ensure hardcap
