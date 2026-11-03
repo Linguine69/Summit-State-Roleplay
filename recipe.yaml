@@ -1,0 +1,105 @@
+$engine: 3
+$onesync: on
+name: Summit ND Test Server
+version: 0.4.0-test
+author: Summit State Roleplay
+description: Fresh-server ND test deployment. Requires a MySQL database and post-install verification. Not a complete public RP server.
+tasks:
+  - action: connect_database
+  - action: download_github
+    src: https://github.com/citizenfx/cfx-server-data
+    ref: master
+    subpath: resources
+    dest: ./resources/[cfx]
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Core
+    dest: ./resources/[nd]/ND_Core
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Characters
+    dest: ./resources/[nd]/ND_Characters
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Banking
+    dest: ./resources/[nd]/ND_Banking
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_Police
+    dest: ./resources/[nd]/ND_Police
+  - action: download_github
+    src: https://github.com/ND-Framework/ND_MDT
+    dest: ./resources/[nd]/ND_MDT
+  - action: download_file
+    url: https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip
+    path: ./tmp/oxmysql.zip
+  - action: unzip
+    src: ./tmp/oxmysql.zip
+    dest: ./resources/[ox]
+  - action: download_file
+    url: https://github.com/overextended/ox_lib/releases/latest/download/ox_lib.zip
+    path: ./tmp/ox_lib.zip
+  - action: unzip
+    src: ./tmp/ox_lib.zip
+    dest: ./resources/[ox]
+  - action: download_file
+    url: https://github.com/overextended/ox_inventory/releases/latest/download/ox_inventory.zip
+    path: ./tmp/ox_inventory.zip
+  - action: unzip
+    src: ./tmp/ox_inventory.zip
+    dest: ./resources/[ox]
+  - action: download_file
+    url: https://github.com/overextended/ox_target/releases/latest/download/ox_target.zip
+    path: ./tmp/ox_target.zip
+  - action: unzip
+    src: ./tmp/ox_target.zip
+    dest: ./resources/[ox]
+  - action: download_file
+    url: https://github.com/pedr0fontoura/fivem-appearance/archive/refs/heads/main.zip
+    path: ./tmp/appearance.zip
+  - action: unzip
+    src: ./tmp/appearance.zip
+    dest: ./tmp/appearance
+  - action: move_path
+    src: ./tmp/appearance/fivem-appearance-main
+    dest: ./resources/[standalone]/fivem-appearance
+  - action: replace_string
+    file: ./resources/[nd]/ND_Characters/data/configuration.lua
+    search: 'characterLimit = 5'
+    replace: 'characterLimit = 3'
+  - action: replace_string
+    file: ./resources/[nd]/ND_Characters/data/configuration.lua
+    search: 'cash = 2500'
+    replace: 'cash = 500'
+  - action: replace_string
+    file: ./resources/[nd]/ND_Characters/data/configuration.lua
+    search: 'bank = 8000'
+    replace: 'bank = 5000'
+  - action: write_file
+    file: ./server.cfg
+    data: |
+      # Summit State Roleplay - first deployment TEST
+      # Add your Cfx license key in txAdmin or host settings.
+      # Do not publish any credentials.
+      sv_hostname "Summit State Roleplay | Closed Test"
+      sets sv_projectName "Summit State Roleplay"
+      sets sv_projectDesc "Serious economy roleplay | Closed test"
+      sv_maxclients 32
+      set onesync on
+      set mysql_connection_string "mysql://{{dbUsername}}:{{dbPassword}}@{{dbHost}}/{{dbName}}?charset=utf8mb4"
+      setr ox:locale en
+      setr inventory:framework nd
+      set core:serverName "Summit State Roleplay"
+      set core:discordMemeberRequired 0
+      ensure mapmanager
+      ensure spawnmanager
+      ensure sessionmanager
+      ensure hardcap
+      ensure oxmysql
+      ensure ox_lib
+      ensure ND_Core
+      ensure fivem-appearance
+      ensure ND_Characters
+      ensure ox_target
+      ensure ox_inventory
+      ensure ND_Banking
+      ensure ND_Police
+      ensure ND_MDT
+  - action: remove_path
+    path: ./tmp
